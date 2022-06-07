@@ -15,5 +15,16 @@ client = discord.Client()
 #봇 시작 확인
 async def on_ready():
     print(f'{client.user}으로 접속 성공했습니다.')
+     
+@client.event
+#메세지 이벤트
+async def on_message(message):
+    #봇 본인의 글에는 답장 안함
+    if message.author == client.user:
+        return
+
+    if message.content.startswith('테스트'):
+        await message.channel.send('테스트')
+
 
 client.run(token)
