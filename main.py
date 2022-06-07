@@ -1,5 +1,5 @@
-import discord
 import logging
+from discord.ext import commands
 import personal.token
 
 logger = logging.getLogger('discord')
@@ -9,22 +9,15 @@ handler.setFormatter(logging.Formatter('%(asctime)s:%(levelname)s:%(name)s: %(me
 logger.addHandler(handler)
 
 token = personal.token.token
-client = discord.Client()
+bot = commands.Bot(command_prefix='!')
 
-@client.event
+@bot.event
 #봇 시작 확인
 async def on_ready():
-    print(f'{client.user}으로 접속 성공했습니다.')
+    print(f'{bot.user}으로 접속 성공했습니다.')
      
-@client.event
-#메세지 이벤트
-async def on_message(message):
-    #봇 본인의 글에는 답장 안함
-    if message.author == client.user:
-        return
+@bot.command()
+async def 테스트(ctx):
+    await ctx.send(f'테스트!')
 
-    if message.content.startswith('테스트'):
-        await message.channel.send('테스트')
-
-
-client.run(token)
+bot.run(token)
