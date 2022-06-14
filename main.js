@@ -8,7 +8,7 @@ const fs = require('node:fs');
 const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
 
 client.once('ready', () => {
-	console.log(`정상 가동`)
+	console.log(`client ready`)
 });
 
 const commands = [];
@@ -26,14 +26,11 @@ const rest = new REST({ version: '9' }).setToken(token);
 
 (async () => {
 	try {
-		console.log('Started refreshing application (/) commands.');
-
 		await rest.put(
 			Routes.applicationGuildCommands(clientId, guildId),
 			{ body: commands },
 		);
-
-		console.log('Successfully reloaded application (/) commands.');
+		console.log('slash command reload');
 	} catch (error) {
 		console.error(error);
 	}
