@@ -85,7 +85,7 @@ raidsDic[6] = ['아브렐슈드(노말)','https://ark.bynn.kr/assets/lostark/com
 raidsDic[7] = ['아브렐슈드(하드)','https://ark.bynn.kr/assets/lostark/commander3.png'];
 
 
-function makeEmbed(type, title, category, user, userAvatar) {
+function smallPartyEmbed(type, title, category, user, userAvatar) {
 	if (type == 1) {
 		categoryName = contentsDic[category][0]
 		categoryImage = contentsDic[category][1]
@@ -101,7 +101,9 @@ function makeEmbed(type, title, category, user, userAvatar) {
 			iconURL: categoryImage
 		})
 		.setColor("#e3c7ff")
-		.setDescription("내용")
+		.addFields(
+			{ name: '1파티', value: '공석\n공석\n공석\n공석', inline: true }
+		)
 		.setFooter({
 			text: user,
 			iconURL: userAvatar
@@ -110,6 +112,36 @@ function makeEmbed(type, title, category, user, userAvatar) {
 
 	return exampleEmbed
 }
+
+function bigPartyEmbed(type, title, category, user, userAvatar) {
+	if (type == 1) {
+		categoryName = contentsDic[category][0]
+		categoryImage = contentsDic[category][1]
+	}
+	else if (type == 2) {
+		categoryName = raidsDic[category][0]
+		categoryImage = raidsDic[category][1]
+	}
+	const exampleEmbed = new MessageEmbed()
+		.setTitle(title)
+		.setAuthor({
+			name: categoryName,
+			iconURL: categoryImage
+		})
+		.setColor("#e3c7ff")
+		.addFields(
+			{ name: '1파티', value: '공석\n공석\n공석\n공석', inline: true },
+			{ name: '2파티', value: '공석\n공석\n공석\n공석', inline: true }
+		)
+		.setFooter({
+			text: user,
+			iconURL: userAvatar
+		})
+		.setTimestamp()
+
+	return exampleEmbed
+}
+
 
 const smallParty = new MessageActionRow()
 	.addComponents(
@@ -270,13 +302,16 @@ client.on('interactionCreate', async interaction => {
 		const pNum = interaction.options.getString('모집인원');
 		const pTitle = interaction.options.getString('제목');
 		let pType = smallParty
+		let pEmbed = smallPartyEmbed
 		if (pNum == 1) {
 			pType = smallParty
+			pEmbed = smallPartyEmbed
 		} else {
 			pType = bigParty
+			pEmbed = bigPartyEmbed
 		}
 		await interaction.reply({
-			embeds: [makeEmbed(1, pTitle, pCate, interaction.user.username, interaction.user.avatarURL())],
+			embeds: [pEmbed(1, pTitle, pCate, interaction.user.username, interaction.user.avatarURL())],
 			components: [pType, redButtons]
 		});
 	}
@@ -285,15 +320,18 @@ client.on('interactionCreate', async interaction => {
 		const pCate = interaction.options.getString('분류');
 		const pTitle = interaction.options.getString('제목');
 		let pType = smallParty
+		let pEmbed = smallPartyEmbed
 		console.log(pCate)
 		if (['5','10'].includes(pCate)) {
 			pType = smallParty
+			pEmbed = smallPartyEmbed
 		}
 		else {
 			pType = bigParty
+			pEmbed = bigPartyEmbed
 		}
 		await interaction.reply({
-			embeds: [ makeEmbed(2,pTitle,pCate,interaction.user.username,interaction.user.avatarURL()) ],
+			embeds: [ pEmbed(2,pTitle,pCate,interaction.user.username,interaction.user.avatarURL()) ],
 			components: [pType, redButtons]
 		});
 	}
@@ -302,11 +340,9 @@ client.on('interactionCreate', async interaction => {
 //버튼 인터렉션
 client.on('interactionCreate', async interaction => {
 	if (!interaction.isButton()) return;
-	console.log()
-	console.log()
 	if (interaction.customId == "attendFirstDps"){
 		await interaction.reply({
-			ephemeral: true, components: [selectClass]
+			ephemeral: true, delete_original: true, components: [selectClass]
 		});
 	}
 	else if (interaction.customId == "delete"){
@@ -322,6 +358,23 @@ client.on('interactionCreate', async interaction => {
 		await interaction.reply("뭔가 이상함")
 	}
 
+});
+
+//select 인터렉션
+client.on('interactionCreate', async interaction => {
+	if (!interaction.isSelectMenu()) return;
+
+	originalMessage = interaction.message.fetchReference()
+		.then(value => client.channels.fetch(value.channelId)
+			.then(channels => channels.messages.fetch(value.id)
+				.then(message => {
+					const originalEmbed = message.embeds[0];
+					let editEmbed = new MessageEmbed(originalEmbed)
+						.setDescription('내용 수정');
+					message.edit({ embeds: [editEmbed] })}
+				)))
+
+	await interaction.reply({ephemeral: true, content:"처리 완료되었습니다."})
 });
 
 client.login(token);
