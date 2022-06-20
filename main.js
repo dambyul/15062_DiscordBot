@@ -54,6 +54,7 @@ const rest = new REST({ version: '9' }).setToken(token);
 
 const contentsDic = {};
 const raidsDic = {};
+const classDic = {};
 
 //카오스 던전
 contentsDic[1] = ['카오스 던전','https://cdn-lostark.game.onstove.com/uploadfiles/notice/17012ef4ba7d431daa0884121bb2d912.png'];
@@ -83,6 +84,29 @@ raidsDic[10] = ['쿠크세이튼(헬)','https://ark.bynn.kr/assets/lostark/comma
 //아브
 raidsDic[6] = ['아브렐슈드(노말)','https://ark.bynn.kr/assets/lostark/commander3.png'];
 raidsDic[7] = ['아브렐슈드(하드)','https://ark.bynn.kr/assets/lostark/commander3.png'];
+
+classDic[1] = ['버서커'];
+classDic[2] = ['디스트로이어'];
+classDic[3] = ['워로드'];
+classDic[4] = ['홀리나이트'];
+classDic[5] = ['배틀마스터'];
+classDic[6] = ['인파이터'];
+classDic[7] = ['기공사'];
+classDic[8] = ['창술사'];
+classDic[9] = ['스트라이커'];
+classDic[10] = ['데빌헌터'];
+classDic[11] = ['블래스터'];
+classDic[12] = ['호크아이'];
+classDic[13] = ['스카우터'];
+classDic[14] = ['건슬링어'];
+classDic[15] = ['아르카나'];
+classDic[16] = ['서머너'];
+classDic[17] = ['바드'];
+classDic[18] = ['소서리스'];
+classDic[19] = ['데모닉'];
+classDic[20] = ['블레이드'];
+classDic[21] = ['리퍼'];
+classDic[22] = ['도화가'];
 
 
 function smallPartyEmbed(type, title, category, user, userAvatar) {
@@ -197,11 +221,11 @@ const redButtons = new MessageActionRow()
 			.setStyle('DANGER')
 	);
 
-const selectClass = new MessageActionRow()
+const selectClassFirstDPS = new MessageActionRow()
 	.addComponents(
 		new MessageSelectMenu()
-			.setCustomId('selectClass')
-			.setPlaceholder('참여할 직업을 선택해주세요')
+			.setCustomId('selectClassFirstDPS')
+			.setPlaceholder('참여할 직업을 선택해주세요 (1팟 딜러)')
 			.addOptions([
 				{
 					label: '버서커',
@@ -294,6 +318,145 @@ const selectClass = new MessageActionRow()
 			]),
 	);
 
+const selectClassFirstSup = new MessageActionRow()
+	.addComponents(
+		new MessageSelectMenu()
+			.setCustomId('selectClassFirstSup')
+			.setPlaceholder('참여할 직업을 선택해주세요 (1팟 서폿)')
+			.addOptions([
+				{
+					label: '홀리나이트',
+					value: '4',
+				},
+				{
+					label: '바드',
+					value: '17',
+				},
+				{
+					label: '도화가',
+					value: '22',
+				},
+			]),
+	);
+
+const selectClassSecondDPS = new MessageActionRow()
+	.addComponents(
+		new MessageSelectMenu()
+			.setCustomId('selectClassSecondDPS')
+			.setPlaceholder('참여할 직업을 선택해주세요 (2팟 딜러)')
+			.addOptions([
+				{
+					label: '버서커',
+					value: '1',
+				},
+				{
+					label: '디스트로이어',
+					value: '2',
+				},
+				{
+					label: '워로드',
+					value: '3',
+				},
+				{
+					label: '홀리나이트',
+					value: '4',
+				},
+				{
+					label: '배틀마스터',
+					value: '5',
+				},
+				{
+					label: '인파이터',
+					value: '6',
+				},
+				{
+					label: '기공사',
+					value: '7',
+				},
+				{
+					label: '창술사',
+					value: '8',
+				},
+				{
+					label: '스트라이커',
+					value: '9',
+				},
+				{
+					label: '데빌헌터',
+					value: '10',
+				},
+				{
+					label: '블래스터',
+					value: '11',
+				},
+				{
+					label: '호크아이',
+					value: '12',
+				},
+				{
+					label: '스카우터',
+					value: '13',
+				},
+				{
+					label: '건슬링어',
+					value: '14',
+				},
+				{
+					label: '아르카나',
+					value: '15',
+				},
+				{
+					label: '서머너',
+					value: '16',
+				},
+				{
+					label: '바드',
+					value: '17',
+				},
+				{
+					label: '소서리스',
+					value: '18',
+				},
+				{
+					label: '데모닉',
+					value: '19',
+				},
+				{
+					label: '블레이드',
+					value: '20',
+				},
+				{
+					label: '리퍼',
+					value: '21',
+				},
+				{
+					label: '도화가',
+					value: '22',
+				},
+			]),
+	);
+
+const selectClassSecondSup = new MessageActionRow()
+	.addComponents(
+		new MessageSelectMenu()
+			.setCustomId('selectClassSecondSup')
+			.setPlaceholder('참여할 직업을 선택해주세요. (2팟서폿)')
+			.addOptions([
+				{
+					label: '홀리나이트',
+					value: '4',
+				},
+				{
+					label: '바드',
+					value: '17',
+				},
+				{
+					label: '도화가',
+					value: '22',
+				},
+			]),
+	);
+
 //슬래시커맨드 인터렉션
 client.on('interactionCreate', async interaction => {
 	if (!interaction.isCommand()) return;
@@ -321,7 +484,6 @@ client.on('interactionCreate', async interaction => {
 		const pTitle = interaction.options.getString('제목');
 		let pType = smallParty
 		let pEmbed = smallPartyEmbed
-		console.log(pCate)
 		if (['5','10'].includes(pCate)) {
 			pType = smallParty
 			pEmbed = smallPartyEmbed
@@ -340,40 +502,160 @@ client.on('interactionCreate', async interaction => {
 //버튼 인터렉션
 client.on('interactionCreate', async interaction => {
 	if (!interaction.isButton()) return;
-	if (interaction.customId == "attendFirstDps"){
-		await interaction.reply({
-			ephemeral: true, delete_original: true, components: [selectClass]
-		});
+	switch (interaction.customId) {
+		case "attendFirstDps" :
+			await interaction.reply({
+				ephemeral: true, components: [selectClassFirstDPS]
+			});
+			break;
+		case "attendFirstSup" :
+			await interaction.reply({
+				ephemeral: true, components: [selectClassFirstSup]
+			});
+			break;
+		case "attendSecondDps" :
+			await interaction.reply({
+				ephemeral: true, components: [selectClassSecondDPS]
+			});
+			break;
+		case "attendSecondSup" :
+			await interaction.reply({
+				ephemeral: true, components: [selectClassSecondSup]
+			});
+			break;
+		case "cancel" :
+			const originalEmbed = interaction.message.embeds[0];
+			let editEmbed = new MessageEmbed(originalEmbed)
+			embedList = editEmbed.fields[0].value.split('\n')
+			for (let i = 0; i < 4; i++){
+				let startIndex = embedList[i].indexOf("<@")+2;
+				let endIndex = embedList[i].indexOf(">");
+				if(embedList[i].substring(startIndex, endIndex) == interaction.user.id) {
+					embedList[i] = "공석"
+				}
+			}
+			editList = embedList.join('\n')
+			editEmbed.fields[0].value = editList
+			if (editEmbed.fields[1]) {
+				embedList = editEmbed.fields[1].value.split('\n')
+				for (let i = 0; i < 4; i++) {
+					let startIndex = embedList[i].indexOf("<@") + 2;
+					let endIndex = embedList[i].indexOf(">");
+					if (embedList[i].substring(startIndex, endIndex) == interaction.user.id) {
+						embedList[i] = "공석"
+					}
+				}
+				editList = embedList.join('\n')
+				editEmbed.fields[1].value = editList
+			}
+			interaction.message.edit({ embeds: [editEmbed] })
+			await interaction.reply({ephemeral: true, content:"취소가 완료되었습니다."})
+			break;
+		case "delete" :
+			if(interaction.user.username == interaction.message.embeds[0].footer.text){
+				interaction.message.delete();
+			}
+			else {
+				await interaction.reply({ephemeral: true, content:"본인이 작성한 글만 삭제할 수 있습니다."})
+			}
+			break;
+		default :
+			await interaction.reply("뭔가 이상함")
+			break;
 	}
-	else if (interaction.customId == "delete"){
-		if(interaction.user.username == interaction.message.embeds[0].footer.text){
-			interaction.message.delete();
-		}
-		else {
-			await interaction.reply({ephemeral: true, content:"본인이 작성한 글만 삭제할 수 있습니다."})
-		}
-		
-	}
-	else {
-		await interaction.reply("뭔가 이상함")
-	}
-
 });
 
 //select 인터렉션
 client.on('interactionCreate', async interaction => {
 	if (!interaction.isSelectMenu()) return;
-
-	originalMessage = interaction.message.fetchReference()
-		.then(value => client.channels.fetch(value.channelId)
-			.then(channels => channels.messages.fetch(value.id)
-				.then(message => {
-					const originalEmbed = message.embeds[0];
-					let editEmbed = new MessageEmbed(originalEmbed)
-						.setDescription('내용 수정');
-					message.edit({ embeds: [editEmbed] })}
-				)))
-
+	switch (interaction.customId) {
+		case "selectClassFirstDPS" :
+			selectedClass = classDic[interaction.values[0]][0]
+			originalMessage = interaction.message.fetchReference()
+				.then(value => client.channels.fetch(value.channelId)
+					.then(channels => channels.messages.fetch(value.id)
+						.then(message => {
+							const originalEmbed = message.embeds[0];
+							let editEmbed = new MessageEmbed(originalEmbed)
+							const userId = "<@" + interaction.user.id + ">"
+							let embedSplit = editEmbed.fields[0].value.split('\n')
+							for (let i = 0; i < 4; i++) {
+								if (embedSplit[i] == "공석") {
+									embedSplit[i] = selectedClass + '(' + userId + ')'
+									let embedValue = embedSplit.join('\n')
+									editEmbed.fields[0].value = embedValue
+									message.edit({embeds: [editEmbed]})
+									break;
+								}
+							}
+						})))
+			break;
+		case "selectClassFirstSup" :
+			selectedClass = classDic[interaction.values[0]][0]
+			originalMessage = interaction.message.fetchReference()
+				.then(value => client.channels.fetch(value.channelId)
+					.then(channels => channels.messages.fetch(value.id)
+						.then(message => {
+							const originalEmbed = message.embeds[0];
+							let editEmbed = new MessageEmbed(originalEmbed)
+							const userId = "<@" + interaction.user.id + ">"
+							let embedSplit = editEmbed.fields[0].value.split('\n')
+							for (let i = 4; i >= 0; i--) {
+								if (embedSplit[i] == "공석") {
+									embedSplit[i] = selectedClass + '(' + userId + ')'
+									let embedValue = embedSplit.join('\n')
+									editEmbed.fields[0].value = embedValue
+									message.edit({embeds: [editEmbed]})
+									break;
+								}
+							}
+						})))
+			break;
+		case "selectClassSecondDPS" :
+			selectedClass = classDic[interaction.values[0]][0]
+			originalMessage = interaction.message.fetchReference()
+				.then(value => client.channels.fetch(value.channelId)
+					.then(channels => channels.messages.fetch(value.id)
+						.then(message => {
+							const originalEmbed = message.embeds[0];
+							let editEmbed = new MessageEmbed(originalEmbed)
+							const userId = "<@" + interaction.user.id + ">"
+							let embedSplit = editEmbed.fields[1].value.split('\n')
+							for (let i = 0; i < 4; i++) {
+								if (embedSplit[i] == "공석") {
+									embedSplit[i] = selectedClass + '(' + userId + ')'
+									let embedValue = embedSplit.join('\n')
+									editEmbed.fields[1].value = embedValue
+									message.edit({embeds: [editEmbed]})
+									break;
+								}
+							}
+						})))
+			break;
+		case "selectClassSecondSup" :
+			selectedClass = classDic[interaction.values[0]][0]
+			originalMessage = interaction.message.fetchReference()
+				.then(value => client.channels.fetch(value.channelId)
+					.then(channels => channels.messages.fetch(value.id)
+						.then(message => {
+							const originalEmbed = message.embeds[0];
+							let editEmbed = new MessageEmbed(originalEmbed)
+							const userId = "<@" + interaction.user.id + ">"
+							let embedSplit = editEmbed.fields[1].value.split('\n')
+							for (let i = 4; i >= 0; i--) {
+								if (embedSplit[i] == "공석") {
+									embedSplit[i] = selectedClass + '(' + userId + ')'
+									let embedValue = embedSplit.join('\n')
+									editEmbed.fields[1].value = embedValue
+									message.edit({embeds: [editEmbed]})
+									break;
+								}
+							}
+						})))
+			break;
+		default :
+			break;
+	}
 	await interaction.reply({ephemeral: true, content:"처리 완료되었습니다."})
 });
 
