@@ -504,9 +504,27 @@ client.on('interactionCreate', async interaction => {
 	if (!interaction.isButton()) return;
 	switch (interaction.customId) {
 		case "attendFirstDps" :
-			await interaction.reply({
-				ephemeral: true, components: [selectClassFirstDPS]
-			});
+			let ifParty = false
+			bigLoop :
+			for (let i of interaction.message.embeds[0].fields){
+				const tmpValues = i.value.split('\n')
+				for (let j of tmpValues){
+					let startIndex = j.indexOf("<@") + 2;
+					let endIndex = j.indexOf(">");
+					if (j.substring(startIndex, endIndex) == interaction.user.id) {
+						ifParty = true
+						await interaction.reply({
+							ephemeral: true, content: '이미 참여중인 파티입니다.'
+						});
+						break bigLoop;
+					}
+				}
+			}
+			if (ifParty == false){
+				await interaction.reply({
+					ephemeral: true, components: [selectClassFirstDPS]
+				});
+			}
 			break;
 		case "attendFirstSup" :
 			await interaction.reply({
