@@ -31,7 +31,7 @@ const rest = new REST({ version: '9' }).setToken(token);
 	try {
 		await rest.put(
 			Routes.applicationCommands(clientId),
-			{ body: [] },
+			{ body: commands },
 		);
 		console.log('slash command reload - global');
 	} catch (error) {
@@ -208,6 +208,26 @@ const bigParty = new MessageActionRow()
 	);
 
 const redButtons = new MessageActionRow()
+	.addComponents(
+		new MessageButton()
+			.setCustomId('cancel')
+			.setLabel('취소하기')
+			.setStyle('DANGER')
+	)
+	.addComponents(
+		new MessageButton()
+			.setCustomId('delete')
+			.setLabel('삭제하기')
+			.setStyle('DANGER')
+	)
+	.addComponents(
+		new MessageButton()
+			.setCustomId('magam')
+			.setLabel('마감하기')
+			.setStyle('SECONDARY')
+	);
+
+const editedredButtons = new MessageActionRow()
 	.addComponents(
 		new MessageButton()
 			.setCustomId('cancel')
@@ -474,7 +494,7 @@ client.on('interactionCreate', async interaction => {
 			pEmbed = bigPartyEmbed
 		}
 		await interaction.reply({
-			embeds: [pEmbed(1, pTitle, pCate, interaction.user.username, interaction.user.avatarURL())],
+			embeds: [pEmbed(1, pTitle, pCate, interaction.member.nickname, interaction.user.avatarURL())],
 			components: [pType, redButtons]
 		});
 	}
@@ -493,7 +513,7 @@ client.on('interactionCreate', async interaction => {
 			pEmbed = bigPartyEmbed
 		}
 		await interaction.reply({
-			embeds: [ pEmbed(2,pTitle,pCate,interaction.user.username,interaction.user.avatarURL()) ],
+			embeds: [ pEmbed(2,pTitle,pCate,interaction.member.nickname,interaction.user.avatarURL()) ],
 			components: [pType, redButtons]
 		});
 	}
@@ -621,11 +641,19 @@ client.on('interactionCreate', async interaction => {
 			await interaction.reply({ephemeral: true, content:"취소가 완료되었어요!"})
 			break;
 		case "delete" :
-			if(interaction.user.username == interaction.message.embeds[0].footer.text){
+			if(interaction.member.nickname == interaction.message.embeds[0].footer.text){
 				interaction.message.delete();
 			}
 			else {
 				await interaction.reply({ephemeral: true, content:"본인이 작성한 글만 삭제할 수 있어요."})
+			}
+			break;
+		case "magam" :
+			if(interaction.member.nickname == interaction.message.embeds[0].footer.text){
+				interaction.message.edit({ components: [editedredButtons] })
+			}
+			else {
+				await interaction.reply({ephemeral: true, content:"본인이 작성한 글만 마감시킬 수 있어요."})
 			}
 			break;
 		default :
