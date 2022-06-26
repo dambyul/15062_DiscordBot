@@ -502,9 +502,9 @@ client.on('interactionCreate', async interaction => {
 //버튼 인터렉션
 client.on('interactionCreate', async interaction => {
 	if (!interaction.isButton()) return;
+	let ifParty = false
 	switch (interaction.customId) {
 		case "attendFirstDps" :
-			let ifParty = false
 			bigLoop :
 			for (let i of interaction.message.embeds[0].fields){
 				const tmpValues = i.value.split('\n')
@@ -514,7 +514,7 @@ client.on('interactionCreate', async interaction => {
 					if (j.substring(startIndex, endIndex) == interaction.user.id) {
 						ifParty = true
 						await interaction.reply({
-							ephemeral: true, content: '이미 참여중인 파티입니다.'
+							ephemeral: true, content: '이미 참여중인 파티에요.'
 						});
 						break bigLoop;
 					}
@@ -527,19 +527,70 @@ client.on('interactionCreate', async interaction => {
 			}
 			break;
 		case "attendFirstSup" :
-			await interaction.reply({
-				ephemeral: true, components: [selectClassFirstSup]
-			});
+			bigLoop :
+			for (let i of interaction.message.embeds[0].fields){
+				const tmpValues = i.value.split('\n')
+				for (let j of tmpValues){
+					let startIndex = j.indexOf("<@") + 2;
+					let endIndex = j.indexOf(">");
+					if (j.substring(startIndex, endIndex) == interaction.user.id) {
+						ifParty = true
+						await interaction.reply({
+							ephemeral: true, content: '이미 참여중인 파티에요.'
+						});
+						break bigLoop;
+					}
+				}
+			}
+			if (ifParty == false){
+				await interaction.reply({
+					ephemeral: true, components: [selectClassFirstSup]
+				});
+			}
 			break;
 		case "attendSecondDps" :
-			await interaction.reply({
-				ephemeral: true, components: [selectClassSecondDPS]
-			});
+			bigLoop :
+			for (let i of interaction.message.embeds[0].fields){
+				const tmpValues = i.value.split('\n')
+				for (let j of tmpValues){
+					let startIndex = j.indexOf("<@") + 2;
+					let endIndex = j.indexOf(">");
+					if (j.substring(startIndex, endIndex) == interaction.user.id) {
+						ifParty = true
+						await interaction.reply({
+							ephemeral: true, content: '이미 참여중인 파티에요.'
+						});
+						break bigLoop;
+					}
+				}
+			}
+			if (ifParty == false){
+				await interaction.reply({
+					ephemeral: true, components: [selectClassSecondDPS]
+				});
+			}
 			break;
 		case "attendSecondSup" :
-			await interaction.reply({
-				ephemeral: true, components: [selectClassSecondSup]
-			});
+			bigLoop :
+			for (let i of interaction.message.embeds[0].fields){
+				const tmpValues = i.value.split('\n')
+				for (let j of tmpValues){
+					let startIndex = j.indexOf("<@") + 2;
+					let endIndex = j.indexOf(">");
+					if (j.substring(startIndex, endIndex) == interaction.user.id) {
+						ifParty = true
+						await interaction.reply({
+							ephemeral: true, content: '이미 참여중인 파티에요.'
+						});
+						break bigLoop;
+					}
+				}
+			}
+			if (ifParty == false){
+				await interaction.reply({
+					ephemeral: true, components: [selectClassSecondSup]
+				});
+			}
 			break;
 		case "cancel" :
 			const originalEmbed = interaction.message.embeds[0];
@@ -567,18 +618,18 @@ client.on('interactionCreate', async interaction => {
 				editEmbed.fields[1].value = editList
 			}
 			interaction.message.edit({ embeds: [editEmbed] })
-			await interaction.reply({ephemeral: true, content:"취소가 완료되었습니다."})
+			await interaction.reply({ephemeral: true, content:"취소가 완료되었어요!"})
 			break;
 		case "delete" :
 			if(interaction.user.username == interaction.message.embeds[0].footer.text){
 				interaction.message.delete();
 			}
 			else {
-				await interaction.reply({ephemeral: true, content:"본인이 작성한 글만 삭제할 수 있습니다."})
+				await interaction.reply({ephemeral: true, content:"본인이 작성한 글만 삭제할 수 있어요."})
 			}
 			break;
 		default :
-			await interaction.reply("뭔가 이상함")
+			await interaction.reply("오류 발생! 개발자에게 보고해주세요.")
 			break;
 	}
 });
@@ -674,7 +725,7 @@ client.on('interactionCreate', async interaction => {
 		default :
 			break;
 	}
-	await interaction.reply({ephemeral: true, content:"처리 완료되었습니다."})
+	await interaction.reply({ephemeral: true, content:"참여 완료되었어요! 직업 선택창은 재선택하면 오류가 발생할 수 있으니, 삼가 부탁드려요."})
 });
 
 client.login(token);
