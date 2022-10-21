@@ -84,6 +84,9 @@ raidsDic[10] = ['쿠크세이튼(헬)','https://ark.bynn.kr/assets/lostark/comma
 //아브
 raidsDic[6] = ['아브렐슈드(노말)','https://ark.bynn.kr/assets/lostark/commander3.png'];
 raidsDic[7] = ['아브렐슈드(하드)','https://ark.bynn.kr/assets/lostark/commander3.png'];
+//일리아칸
+raidsDic[11] = ['일리아칸(노말)','https://ark.bynn.kr/assets/lostark/commander4.png'];
+raidsDic[12] = ['일리아칸(하드)','https://ark.bynn.kr/assets/lostark/commander4.png'];
 
 classDic[1] = ['버서커'];
 classDic[2] = ['디스트로이어'];
@@ -335,6 +338,10 @@ const selectClassFirstDPS = new MessageActionRow()
 					label: '도화가',
 					value: '22',
 				},
+				{
+					label: '기상술사',
+					value: '23',
+				}
 			]),
 	);
 
@@ -452,6 +459,10 @@ const selectClassSecondDPS = new MessageActionRow()
 				{
 					label: '도화가',
 					value: '22',
+				},
+				{
+					label: '기상술사',
+					value: '23',
 				},
 			]),
 	);
